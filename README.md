@@ -1,4 +1,4 @@
-# My Java projects from studies
+# Study projects
 
 Repository contains few programs wrote in Java.
 
