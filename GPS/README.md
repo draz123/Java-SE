@@ -1,5 +1,5 @@
+##GPS-Java project
 
-GPS-Java project
-======================
 
-GPS- program reads XML OSM files with SAX and finding the shortest way between two points(Djikstry from JUNG library) from map. It also save map in serialized dat files or XML using XStream library. 
+Program process maps from openstreetmap.org saved in OSM XML format. We can find shortest way between two junctions after loading of map. Path finder has also features, that allows sending map fragments through the internet, and some serializatiom mechanisms.
+ 
