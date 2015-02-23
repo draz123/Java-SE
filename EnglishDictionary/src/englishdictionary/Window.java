@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package englishdictionary;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import java.util.logging.Level;
@@ -16,23 +10,33 @@ import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 
 /**
+ * This class draw window on screen
  *
- * @author Albert
+ * @author Albert Podraza
  */
 public class Window extends javax.swing.JFrame {      
    
     private final Random rand;
     private String answer;
-    private DictHandler dictHandler;
+    private final DictHandler dictHandler;
+    
     /**
-     * Creates new form Window
+     * Default constructor, there is initialization of winow and all it's 
+     * elements.
      */
     public Window()  {
         dictHandler=new DictHandler();
         rand=new Random();
-        initComponents();       
+        initComponents();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         initKey();    
     }
+    
+    /**
+     * Method checks, when dictionary's list is empty and inform user, when it
+     * occurs.
+     */
     public void checkAction(){
     String tmp=input.getText();
         input.setText("");
@@ -63,20 +67,21 @@ public class Window extends javax.swing.JFrame {
             startQuiz();
         }
     }                                        
-
     
+    /**
+     * Sets the enter key, as the check button
+     */
     private void initKey(){
-        System.out.println("Heeeeeeeeeeeeeeeere");
-        InputMap im = checkBut.getInputMap();
+        InputMap im = input.getInputMap();
         im.put(KeyStroke.getKeyStroke("ENTER"), "pressed");
         im.put(KeyStroke.getKeyStroke("released ENTER"), "released");
-        setTitle("Quiz");
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         getRootPane().setDefaultButton(checkBut);
         input.requestFocus();
     }
     
+    /**
+     * Drawing words, which translation we have to write
+     */
     public void startQuiz(){       
         int randomNum = rand.nextInt(dictHandler.getDict().size() );   
         check.setText(dictHandler.getDict().get(randomNum).getPolish());
@@ -88,19 +93,22 @@ public class Window extends javax.swing.JFrame {
 
         checkBut = new javax.swing.JButton();
         input = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         reloadBut = new javax.swing.JButton();
         addBaseBut = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         output = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         check = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("English words");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        checkBut.setBackground(new java.awt.Color(212, 207, 207));
         checkBut.setFont(new java.awt.Font("Adobe Garamond Pro", 0, 24)); // NOI18N
-        checkBut.setText("Check!");
-        checkBut.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 204, 204), null));
+        checkBut.setText("Check");
+        checkBut.setBorder(null);
         checkBut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkButActionPerformed(evt);
@@ -111,105 +119,74 @@ public class Window extends javax.swing.JFrame {
                 checkButKeyPressed(evt);
             }
         });
+        getContentPane().add(checkBut, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 110, 30));
 
-        input.setFont(new java.awt.Font("Adobe Garamond Pro", 0, 24)); // NOI18N
+        input.setBackground(new java.awt.Color(212, 207, 207));
+        input.setFont(new java.awt.Font("Adobe Garamond Pro", 0, 30)); // NOI18N
+        input.setBorder(null);
         input.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         input.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputActionPerformed(evt);
             }
         });
+        getContentPane().add(input, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 394, 50));
 
-        jLabel1.setFont(new java.awt.Font("Adobe Garamond Pro", 0, 24)); // NOI18N
-        jLabel1.setText("Word competition!");
-
+        reloadBut.setBackground(new java.awt.Color(212, 207, 207));
         reloadBut.setFont(new java.awt.Font("Adobe Garamond Pro", 0, 24)); // NOI18N
         reloadBut.setText("Reload");
-        reloadBut.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 204, 204), null));
+        reloadBut.setBorder(null);
         reloadBut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reloadButActionPerformed(evt);
             }
         });
+        getContentPane().add(reloadBut, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 230, 110, 30));
 
+        addBaseBut.setBackground(new java.awt.Color(212, 207, 207));
         addBaseBut.setFont(new java.awt.Font("Adobe Garamond Pro", 0, 24)); // NOI18N
         addBaseBut.setText("Add database");
-        addBaseBut.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 204, 204), null));
+        addBaseBut.setBorder(null);
         addBaseBut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addBaseButActionPerformed(evt);
             }
         });
+        getContentPane().add(addBaseBut, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 230, 150, 30));
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         output.setEditable(false);
+        output.setBackground(new java.awt.Color(212, 207, 207));
         output.setColumns(20);
         output.setFont(new java.awt.Font("Adobe Garamond Pro", 0, 24)); // NOI18N
         output.setLineWrap(true);
         output.setRows(5);
+        output.setBorder(null);
         output.setMargin(new java.awt.Insets(6, 6, 6, 6));
         jScrollPane1.setViewportView(output);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 30, 480, 189));
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         check.setEditable(false);
+        check.setBackground(new java.awt.Color(212, 207, 207));
         check.setColumns(20);
         check.setFont(new java.awt.Font("Adobe Garamond Pro", 0, 24)); // NOI18N
         check.setLineWrap(true);
         check.setRows(5);
+        check.setBorder(null);
         check.setMargin(new java.awt.Insets(6, 6, 6, 6));
         jScrollPane2.setViewportView(check);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(checkBut, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(200, 200, 200)
-                                .addComponent(reloadBut, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(71, 71, 71)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(74, 74, 74)
-                                .addComponent(addBaseBut)))))
-                .addContainerGap(26, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(11, 11, 11)
-                        .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(checkBut)
-                    .addComponent(reloadBut)
-                    .addComponent(addBaseBut))
-                .addContainerGap(22, Short.MAX_VALUE))
-        );
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 394, 128));
+
+        jLabel2.setBackground(new java.awt.Color(204, 0, 0));
+        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Albert\\Documents\\NetBeansProjects\\EnglishDictionary\\Bez nazwy-1.png")); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 1000, 290));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -245,7 +222,7 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JTextArea check;
     private javax.swing.JButton checkBut;
     private javax.swing.JTextField input;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea output;

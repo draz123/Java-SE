@@ -3,11 +3,23 @@ package server;
 import java.io.*;
 import java.net.*;
 
+/**
+ * Creates servers(throads)
+ *
+ * @author Albert Podraza
+ */
 public class ServerThread extends Thread{
+    
     private final MyServer server;
     private final Socket socket;
     private  String nickname=null;
     
+    /**
+     * Default constructor
+     * 
+     * @param server specified server
+     * @param socket specified server's parameter
+     */
     public ServerThread( MyServer server, Socket socket ) {
         this.server=server;
         this.socket=socket;

@@ -1,4 +1,3 @@
-
 package server;
 
 import java.io.*;
@@ -7,17 +6,32 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+/**
+ * Class, that creates throads, which are servers
+ *
+ * @author Albert Podraza
+ */
 public class MyServer extends Thread{
+    
     private ServerSocket ss;
     private final Hashtable outputStreams = new Hashtable();
     private final int port;
     
-    public MyServer(int port) throws IOException {
+    /**
+     * Default constructor, starts start method
+     * 
+     * @param port specified external port
+     */
+    public MyServer(int port) {
         this.port=port;
         start();     
     }
     
+    /**
+     * 
+     * @param port specified external port
+     * @throws IOException when something witg input or output goes wrong
+     */
     private void listen(int port) throws IOException {        
         ss=new ServerSocket( port );        
         while(true) {                   
@@ -33,6 +47,11 @@ public class MyServer extends Thread{
         return outputStreams.elements();
     }
     
+    /**
+     * Sends messages to all server users
+     * 
+     * @param message specified message 
+     */
     void sendToAll( String message ) {
         synchronized(outputStreams) {
         for (Enumeration e = getOutputStreams(); e.hasMoreElements(); ) {
@@ -44,6 +63,11 @@ public class MyServer extends Thread{
         }
     }
     
+    /**
+     * Disconnects user and informs others about it 
+     * 
+     * @param s user, who disconnected
+     */
     void removeConnection( Socket s ) {
         synchronized(outputStreams) {
             System.out.println( "Removing connection to "+s );

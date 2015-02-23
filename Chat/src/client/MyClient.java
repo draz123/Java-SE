@@ -8,8 +8,6 @@ package client;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -21,18 +19,25 @@ import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
+ * Contains internal chat window, where users can talk each other
  *
- * @author Albert
+ * @author Albert Podraza
  */
 public  class MyClient extends javax.swing.JFrame implements Runnable {
     
-    private Color color;
+    private final Color color;
     private Socket socket;
     private DataOutputStream dout;
     private DataInputStream din;
     private String nickname;
     private int posX=0,posY=0;
     
+    /**
+     * Constructor with 2 parameters, connects to server for given parameters
+     * 
+     * @param host specified external host
+     * @param port specified external port
+     */
     public MyClient(String host, int port) {        
         initComponents();
         color=new Color(153, 222, 145);
@@ -41,16 +46,18 @@ public  class MyClient extends javax.swing.JFrame implements Runnable {
         connect(host,port);                    
     }
     
-        private void makeDrag(){
-        this.addMouseListener(new MouseAdapter(){
-            public void mousePressed(MouseEvent e)
-            {
-                posX=e.getX();
-                posY=e.getY();
-            }
-        });
-            this.addMouseMotionListener(new MouseAdapter()
+    /**
+     * Allows movement of window
+     */
+    private void makeDrag(){
+    this.addMouseListener(new MouseAdapter(){
+        public void mousePressed(MouseEvent e)
         {
+            posX=e.getX();
+            posY=e.getY();
+        }
+    });
+    this.addMouseMotionListener(new MouseAdapter(){
          public void mouseDragged(MouseEvent evt)
          {			
             setLocation (evt.getXOnScreen()-posX,evt.getYOnScreen()-posY);
@@ -58,6 +65,12 @@ public  class MyClient extends javax.swing.JFrame implements Runnable {
         });
     }
     
+    /**
+     * Procedure of setting connection between server and client
+     * 
+     * @param host given host
+     * @param port given port
+     */
     private void connect(String host, int port){
         try {
             socket = new Socket( host, port );
@@ -70,10 +83,20 @@ public  class MyClient extends javax.swing.JFrame implements Runnable {
         } catch( IOException ie ) { System.out.println( ie ); }
     }
     
-    void setOutput(String message){
+    /**
+     * Formatting output
+     * 
+     * @param message string with message to display 
+     */
+    public void setOutput(String message){
         outputWindow.append( message+"\n" );
     }
     
+    /**
+     * Processing message wrote by users, and sending it to server
+     * 
+     * @param message string with message to display
+     */
     private void processMessage( String message ) {
         try {
             dout.writeUTF( nickname+": "+message );
@@ -81,16 +104,25 @@ public  class MyClient extends javax.swing.JFrame implements Runnable {
         } catch( IOException ie ) { System.out.println( ie ); }
     }
     
-     private void welcomeEverybody( String message ) {
+    /**
+     * Method, which is called when somebody connect to server(room), shows
+     * who connected
+     * 
+     * @param message informatyion with nickname of new user  
+     */
+    private void welcomeEverybody( String message ) {
         try {
             dout.writeUTF(nickname);
             dout.writeUTF(message);
             outputWindow.append("Connected to chat\n");
         } catch( IOException ie ) { System.out.println( ie ); }
     }
-     
-
     
+    /**
+     * Changing user's nick
+     * 
+     * @param oldNickname old user's nickname
+     */
     private void someoneChangedNick(String oldNickname) {
         try {
             System.out.println("User "+oldNickname+" changed his nickname to "+nickname);
@@ -100,7 +132,9 @@ public  class MyClient extends javax.swing.JFrame implements Runnable {
             setTitle(nickname);
         } catch( IOException ie ) { System.out.println( ie ); }
     } 
-     
+    /**
+     * concurrent method, that allows for multithroading
+     */ 
         @Override
     public void run() {
         try {                     
@@ -219,8 +253,7 @@ public  class MyClient extends javax.swing.JFrame implements Runnable {
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         try {
             this.dispose();
-            dout.writeUTF( nickname+" disconnected from chat ");
-        
+            dout.writeUTF( nickname+" disconnected from chat "); 
                     dout.close();
                     din.close();
                     socket.close();

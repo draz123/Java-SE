@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package englishdictionary;
 
 import java.io.BufferedReader;
@@ -20,8 +15,11 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
- * @author Albert
+ * This class consists methods that are responsible for processing dictionary
+ * words base and one wrapper, which return list of words.
+ * 
+ * @author Albert Podraza
+ * @see List
  */
 public class DictHandler {
     
@@ -30,12 +28,21 @@ public class DictHandler {
     private final Random rand;
     private String answer;
     
+    /**
+     * Default constructor that initialize two variables, dict, which is list
+     * with dictionary's words and rand that is base for drawing words.
+     */
     public DictHandler(){
         dict=new LinkedList();
         rand=new Random();     
     }
     
-    
+    /**
+     * 
+     * @param fileDir file with word's database
+     * @throws FileNotFoundException if the filedir is empty
+     * @throws IOException if something during processing goes wrong
+     */
     void readFile(File fileDir) throws FileNotFoundException, IOException{
         if(fileDir==null){
             fileDir=actualData;
@@ -67,7 +74,11 @@ public class DictHandler {
 			System.out.println(e.getMessage());
 	    }
     }
-
+    
+    /**
+     * 
+     * @param w includes main class 
+     */
     public void addDatabase(Window w){
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("txt","TXT");
@@ -75,14 +86,16 @@ public class DictHandler {
         int returnVal = chooser.showOpenDialog(w);
         actualData = new File(chooser.getSelectedFile().getAbsolutePath()); 
         try {
-            //  System.out.println(chooser.getSelectedFile().getAbsolutePath());
             readFile(actualData);
-       //     startQuiz();
         } catch (IOException ex) {
             Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
+    /**
+     * 
+     * @return list with words and translation 
+     */
     public LinkedList<Element> getDict(){
         return dict;
     }
